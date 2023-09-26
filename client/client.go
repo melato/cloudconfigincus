@@ -5,7 +5,7 @@ import (
 
 	lxd "github.com/lxc/incus/client"
 	"github.com/lxc/incus/shared"
-	config "melato.org/cloudconfigincus/cliconfig"
+	config "github.com/lxc/incus/shared/cliconfig"
 )
 
 var Trace bool
