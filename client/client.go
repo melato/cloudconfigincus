@@ -3,49 +3,48 @@ package client
 import (
 	"fmt"
 
-	lxd "github.com/lxc/incus/client"
-	"github.com/lxc/incus/shared"
+	incus "github.com/lxc/incus/client"
 	config "github.com/lxc/incus/shared/cliconfig"
 )
 
 var Trace bool
 
 /*
-LxdClient provides an lxd.InstanceServer
+InstanceClient provides an InstanceServer
 Use it by calling these methods, in order:
 Configured(), CurrentServer().
 */
-type LxdClient struct {
+type InstanceClient struct {
 	ForceLocal bool   `name:"force-local" usage:"Force using the local unix socket"`
 	Project    string `name:"project" usage:"Override the default project"`
 
 	conf       *config.Config
-	rootServer lxd.InstanceServer
+	rootServer incus.InstanceServer
 }
 
-func (t *LxdClient) Init() error {
+func (t *InstanceClient) Init() error {
 	return nil
 }
 
-func connectUnix() (lxd.InstanceServer, error) {
+func connectUnix() (incus.InstanceServer, error) {
 	unixSocket, err := UnixSocket()
 	if err != nil {
 		return nil, err
 	}
-	if unixSocket == "" || !shared.PathExists(unixSocket) {
+	if unixSocket == "" || !PathExists(unixSocket) {
 		return nil, fmt.Errorf("no such unix socket: %s", unixSocket)
 	}
 	if Trace {
 		fmt.Printf("using unix socket: %s\n", unixSocket)
 	}
-	server, err := lxd.ConnectIncusUnix(unixSocket, nil)
+	server, err := incus.ConnectIncusUnix(unixSocket, nil)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", unixSocket, err)
 	}
 	return server, nil
 }
 
-func (t *LxdClient) Configured() error {
+func (t *InstanceClient) Configured() error {
 	if t.ForceLocal {
 		server, err := connectUnix()
 		if err != nil {
@@ -63,8 +62,8 @@ func (t *LxdClient) Configured() error {
 	return nil
 }
 
-// RootServer - return the unqualified (no project) LXD instance server
-func (t *LxdClient) RootServer() (lxd.InstanceServer, error) {
+// RootServer - return the unqualified (no project) instance server
+func (t *InstanceClient) RootServer() (incus.InstanceServer, error) {
 	if t.rootServer == nil {
 		remote, ok := t.conf.Remotes[t.conf.DefaultRemote]
 		if ok && remote.Addr == "unix://" {
@@ -84,9 +83,9 @@ func (t *LxdClient) RootServer() (lxd.InstanceServer, error) {
 	return t.rootServer, nil
 }
 
-// RootServer - return the LXD instance server for the specified project
+// RootServer - return the instance server for the specified project
 // If project is empty, use the default project
-func (t *LxdClient) ProjectServer(project string) (lxd.InstanceServer, error) {
+func (t *InstanceClient) ProjectServer(project string) (incus.InstanceServer, error) {
 	if project == "" {
 		project = t.CurrentProject()
 	}
@@ -98,12 +97,12 @@ func (t *LxdClient) ProjectServer(project string) (lxd.InstanceServer, error) {
 	return server.UseProject(project), nil
 }
 
-// RootServer - return the LXD instance server for the current project
-func (t *LxdClient) CurrentServer() (lxd.InstanceServer, error) {
+// RootServer - return the instance server for the current project
+func (t *InstanceClient) CurrentServer() (incus.InstanceServer, error) {
 	return t.ProjectServer("")
 }
 
-func (t *LxdClient) CurrentProject() string {
+func (t *InstanceClient) CurrentProject() string {
 	if t.Project != "" {
 		return t.Project
 	}
@@ -116,6 +115,6 @@ func (t *LxdClient) CurrentProject() string {
 	return ""
 }
 
-func (t *LxdClient) Config() *config.Config {
+func (t *InstanceClient) Config() *config.Config {
 	return t.conf
 }

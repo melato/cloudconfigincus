@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	lxd "github.com/lxc/incus/client"
+	incus "github.com/lxc/incus/client"
 	"melato.org/cloudconfig"
 	"melato.org/cloudconfig/ostype"
 	"melato.org/cloudconfigincus"
@@ -21,22 +21,26 @@ var version string
 var usageData []byte
 
 type App struct {
-	client.LxdClient
-	Instance string `name:"i" usage:"LXD instance to configure"`
+	Client   client.InstanceClient
+	Instance string `name:"i" usage:"instance to configure"`
 	OS       string `name:"ostype" usage:"OS type"`
 	os       cloudconfig.OSType
-	server   lxd.InstanceServer
+	server   incus.InstanceServer
+}
+
+func (t *App) Init() error {
+	return t.Client.Init()
 }
 
 func (t *App) Configured() error {
 	if t.Instance == "" {
 		return fmt.Errorf("missing instance")
 	}
-	err := t.LxdClient.Configured()
+	err := t.Client.Configured()
 	if err != nil {
 		return err
 	}
-	server, err := t.CurrentServer()
+	server, err := t.Client.CurrentServer()
 	if err != nil {
 		return err
 	}
@@ -54,7 +58,7 @@ func (t *App) Configured() error {
 }
 
 func (t *App) Apply(configFiles ...string) error {
-	base := cloudconfiglxd.NewInstanceConfigurer(t.server, t.Instance)
+	base := cloudconfigincus.NewInstanceConfigurer(t.server, t.Instance)
 	base.Log = os.Stdout
 	configurer := cloudconfig.NewConfigurer(base)
 	configurer.OS = t.os
@@ -67,7 +71,7 @@ func (t *App) Apply(configFiles ...string) error {
 }
 
 func (t *App) FileExists(path string) error {
-	base := cloudconfiglxd.NewInstanceConfigurer(t.server, t.Instance)
+	base := cloudconfigincus.NewInstanceConfigurer(t.server, t.Instance)
 	base.Log = os.Stdout
 	exists, err := base.FileExists(path)
 	if err != nil {

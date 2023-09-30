@@ -1,4 +1,4 @@
-package cloudconfiglxd
+package cloudconfigincus
 
 import (
 	"bytes"
@@ -9,12 +9,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	lxd "github.com/lxc/incus/client"
+	incus "github.com/lxc/incus/client"
 	"github.com/lxc/incus/shared/api"
 )
 
 type InstanceConfigurer struct {
-	Server      lxd.InstanceServer
+	Server      incus.InstanceServer
 	Log         io.Writer
 	instance    string
 	createdDirs map[string]struct{}
@@ -22,7 +22,7 @@ type InstanceConfigurer struct {
 
 // NewInstanceConfigurer creates a BaseConfigurer for an instance.
 // The configurer should not be reused for other instances.
-func NewInstanceConfigurer(server lxd.InstanceServer, instance string) *InstanceConfigurer {
+func NewInstanceConfigurer(server incus.InstanceServer, instance string) *InstanceConfigurer {
 	t := &InstanceConfigurer{Server: server, instance: instance}
 	t.createdDirs = make(map[string]struct{})
 	return t
@@ -51,7 +51,7 @@ func (t *InstanceConfigurer) FileExists(file string) (bool, error) {
 		// The error could be:
 		// 	Not Found
 		// 	Instance not found
-		//  ... and possibly others if the communication with the LXD server fails
+		//  ... and possibly others if the communication with the server fails
 		// Rather than trying to distinguish between different types of errors,
 		// return that the file does not exist.
 		return false, nil
@@ -60,7 +60,7 @@ func (t *InstanceConfigurer) FileExists(file string) (bool, error) {
 	return true, nil
 }
 
-func exitCode(serverOp lxd.Operation) (int, error) {
+func exitCode(serverOp incus.Operation) (int, error) {
 	op := serverOp.Get()
 	/*
 		data, _ := json.MarshalIndent(op, "", " ")
@@ -88,7 +88,7 @@ func (t *InstanceConfigurer) exec(input string, execArgs ...string) error {
 	post.Command = execArgs
 	post.WaitForWS = true
 
-	var args lxd.InstanceExecArgs
+	var args incus.InstanceExecArgs
 	if t.Log != nil {
 		args.Stderr = NopWriteCloser(t.Log)
 	} else {
@@ -138,7 +138,7 @@ func (t *InstanceConfigurer) ensureDirExists(dir string) error {
 }
 
 func (t *InstanceConfigurer) writeOrAppendFile(path string, data []byte, perm fs.FileMode, writeMode string) error {
-	var args lxd.InstanceFileArgs
+	var args incus.InstanceFileArgs
 	args.Mode = int(perm)
 	args.WriteMode = writeMode
 	args.Content = bytes.NewReader(data)
