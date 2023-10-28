@@ -1,16 +1,16 @@
 module melato.org/cloudconfigincus
 
-go 1.19
+go 1.20
 
 require (
-	github.com/lxc/incus v0.0.0-20230930062653-ac6e6d2c140f
-	melato.org/cloudconfig v0.2.0
+	github.com/lxc/incus v0.0.0-20231028182123-1d7f274e841b
+	melato.org/cloudconfig v0.3.0
 	melato.org/command v1.0.1
 )
 
 require (
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/uuid v1.3.1 // indirect
+	github.com/google/uuid v1.4.0 // indirect
 	github.com/gorilla/schema v1.2.0 // indirect
 	github.com/gorilla/securecookie v1.1.1 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
@@ -19,10 +19,10 @@ require (
 	github.com/pkg/sftp v1.13.6 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/zitadel/oidc/v2 v2.11.0 // indirect
-	golang.org/x/crypto v0.13.0 // indirect
-	golang.org/x/oauth2 v0.12.0 // indirect
-	golang.org/x/sys v0.12.0 // indirect
-	golang.org/x/term v0.12.0 // indirect
+	golang.org/x/crypto v0.14.0 // indirect
+	golang.org/x/oauth2 v0.13.0 // indirect
+	golang.org/x/sys v0.13.0 // indirect
+	golang.org/x/term v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
