@@ -3,7 +3,7 @@ module melato.org/cloudconfigincus
 go 1.20
 
 require (
-	github.com/lxc/incus v0.0.0-20231028182123-1d7f274e841b
+	github.com/lxc/incus v0.0.0-20231027190220-0a5f3e4fd588
 	melato.org/cloudconfig v0.3.0
 	melato.org/command v1.0.1
 )

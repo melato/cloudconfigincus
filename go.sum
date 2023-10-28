@@ -21,6 +21,8 @@ github.com/gorilla/websocket v1.5.0/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/ad
 github.com/jeremija/gosubmit v0.2.7 h1:At0OhGCFGPXyjPYAsCchoBUhE099pcBXmsb4iZqROIc=
 github.com/kr/fs v0.1.0 h1:Jskdu9ieNAYnjxsi0LbQp1ulIKZV1LAFgK1tWhpZgl8=
 github.com/kr/fs v0.1.0/go.mod h1:FFnZGqtBN9Gxj7eW1uZ42v5BccTP0vu6NEaFoC2HwRg=
+github.com/lxc/incus v0.0.0-20231027190220-0a5f3e4fd588 h1:JJmAWSkrnYg1p1K+yfxd/TFl5gXqQS/QHFMQ0XdwGvU=
+github.com/lxc/incus v0.0.0-20231027190220-0a5f3e4fd588/go.mod h1:sVcp3lVH1cK1L+KfDfERLSvkXXbbv8s3ZWjtjB2ynX8=
 github.com/lxc/incus v0.0.0-20231028182123-1d7f274e841b h1:ycVN8i2JMkzhAEzWedJdrjRfIhuwClSGugZxHNb+4x4=
 github.com/lxc/incus v0.0.0-20231028182123-1d7f274e841b/go.mod h1:sVcp3lVH1cK1L+KfDfERLSvkXXbbv8s3ZWjtjB2ynX8=
 github.com/muhlemmer/gu v0.3.1 h1:7EAqmFrW7n3hETvuAdmFmn4hS8W+z3LgKtrnow+YzNM=
